@@ -18,6 +18,8 @@ void TicTacToeWidget::closeGame(Player p)
         std::cout << "Player1 is a winner." << std::endl;
     else if (p == Player2)
         std::cout << "Player2 is a winner." << std::endl;
+    else if (p == Draw)
+        std::cout << "Draw game." << std::endl;
     else
         std::cout << "I don't know who wins." << std::endl;
     // It disconnects with slots printPlayer(Player) and closeGame(Player)
@@ -33,6 +35,7 @@ TicTacToeWidget::TicTacToeWidget(QWidget *parent)
     : QWidget(parent)
 {
     m_currentPlayer = Player1;
+    steps = 0;
     setupBoard();
     connect(this, SIGNAL(currentPlayerChanged(Player)), this, SLOT(printPlayer(Player)));
     connect(this, SIGNAL(gameOver(Player)), this, SLOT(closeGame(Player)));
@@ -77,7 +80,7 @@ void TicTacToeWidget::setupBoard()
     setLayout(gridLayout);
 }
 
-Player TicTacToeWidget::checkWinCondion(int id)
+Player TicTacToeWidget::checkWinCondition(int id)
 {
     QPushButton *button = board.at(id);
     QString const text = button->text();
@@ -85,6 +88,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
     QPushButton * next_b;
     switch (id) {
     case 0:
+        steps++;
         // 1st row 0-1-2
         next_a = board.at(1);
         next_b = board.at(2);
@@ -102,6 +106,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 1:
+        steps++;
         // 1st row 0-1-2
         next_a = board.at(0);
         next_b = board.at(2);
@@ -114,6 +119,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 2:
+        steps++;
         // 1st row 0-1-2
         next_a = board.at(1);
         next_b = board.at(0);
@@ -131,6 +137,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 3:
+        steps++;
         // 2nd row 3-4-5
         next_a = board.at(4);
         next_b = board.at(5);
@@ -143,6 +150,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 4:
+        steps++;
         // 2nd row 3-4-5
         next_a = board.at(3);
         next_b = board.at(5);
@@ -165,6 +173,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 5:
+        steps++;
         // 2nd row 3-4-5
         next_a = board.at(4);
         next_b = board.at(3);
@@ -177,6 +186,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 6:
+        steps++;
         // 1st column 0-3-6
         next_a = board.at(3);
         next_b = board.at(0);
@@ -194,6 +204,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 7:
+        steps++;
         // column 2-4-7
         next_a = board.at(4);
         next_b = board.at(1);
@@ -206,6 +217,7 @@ Player TicTacToeWidget::checkWinCondion(int id)
             return m_currentPlayer;
         return Invalid;
     case 8:
+        steps++;
         // 3rd column 2-5-8
         next_a = board.at(2);
         next_b = board.at(5);
@@ -245,12 +257,19 @@ void TicTacToeWidget::handleButtonClick(int index)
     if (button->text() != " ")
         return;
     button->setText(m_currentPlayer == Player1 ? "X" : "O");
-    Player winner = checkWinCondion(index);
+    Player winner = checkWinCondition(index);
     if (winner == Invalid)
     {
-        std::cout << "Winner is still invalid" << std::endl;
         setCurrentPlayer(m_currentPlayer == Player1 ? Player2 : Player1);
-        return;
+        if (steps == 9)
+        {
+            std::cout << "DRAW, steps == 9" << std::endl;
+            emit gameOver(Draw);
+        }
+        else
+        {
+            std::cout << "Winner is still invalid, steps = " << steps << std::endl;
+        }
     }
     else
     {
