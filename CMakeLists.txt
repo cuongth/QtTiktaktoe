@@ -42,6 +42,8 @@ else()
     else()
         add_executable(tictactoe
             ${PROJECT_SOURCES}
+            configurationdialog.h configurationdialog.cpp configurationdialog.ui
+
         )
     endif()
 
