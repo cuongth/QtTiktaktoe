@@ -22,13 +22,14 @@ void TicTacToeWidget::closeGame(Player p)
         std::cout << "Draw game." << std::endl;
     else
         std::cout << "I don't know who wins." << std::endl;
+    steps = 0;
     // It disconnects with slots printPlayer(Player) and closeGame(Player)
     // so slot handleButtonClick(int) is still be triggered on click.
-    disconnect();
+    //disconnect();
     // just one of 2 following statements can disconnect on slot handleButtonClick(int)
-    mapper->disconnect(); // disconnect(mapper, nullptr, nullptr, nullptr);
-    for (QPushButton *button: board)
-        button->disconnect(); // disconnect(button, nullptr, nullptr, nullptr);
+    //mapper->disconnect(); // disconnect(mapper, nullptr, nullptr, nullptr);
+    //for (QPushButton *button: board)
+    //    button->disconnect(); // disconnect(button, nullptr, nullptr, nullptr);
 }
 
 TicTacToeWidget::TicTacToeWidget(QWidget *parent)
@@ -260,7 +261,6 @@ void TicTacToeWidget::handleButtonClick(int index)
     Player winner = checkWinCondition(index);
     if (winner == Invalid)
     {
-        setCurrentPlayer(m_currentPlayer == Player1 ? Player2 : Player1);
         if (steps == 9)
         {
             std::cout << "DRAW, steps == 9" << std::endl;
@@ -268,7 +268,8 @@ void TicTacToeWidget::handleButtonClick(int index)
         }
         else
         {
-            std::cout << "Winner is still invalid, steps = " << steps << std::endl;
+            setCurrentPlayer(m_currentPlayer == Player1 ? Player2 : Player1);
+            std::cout << "Continue after steps:" << steps << std::endl;
         }
     }
     else

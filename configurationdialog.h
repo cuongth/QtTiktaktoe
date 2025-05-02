@@ -19,6 +19,7 @@ public:
 
 private:
     Ui::ConfigurationDialog *ui;
+    //QRegularExpression regex;
 public slots:
     void updateOKButtonState();
     void setPlayer1Name(QString &p1name);

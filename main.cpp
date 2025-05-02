@@ -1,5 +1,4 @@
-#include "tictactoewidget.h"
-#include "configurationdialog.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -18,9 +17,8 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    TicTacToeWidget w;
+
+    MainWindow w;
     w.show();
-    ConfigurationDialog dialog;
-    dialog.show();
     return a.exec();
 }

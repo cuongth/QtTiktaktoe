@@ -6,6 +6,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent)
     , ui(new Ui::ConfigurationDialog)
 {
     ui->setupUi(this);
+    //regex.setPattern("([1-9][0-9]{0,2}) [ ]?(mg|g|kg)");
+    //regex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
     updateOKButtonState();
 }
 
@@ -17,8 +19,12 @@ ConfigurationDialog::~ConfigurationDialog()
 void ConfigurationDialog::updateOKButtonState()
 {
     bool pl1NameEmpty = ui->player1Name->text().isEmpty();
-    bool pl2NameEmpty = ui->player2Name->text().isEmpty();
+    QString const txt2 = ui->player2Name->text();
+    bool pl2NameEmpty = txt2.isEmpty();
+    //QRegularExpressionMatch match = regex.match(txt2);
+    //bool isWeight = match.hasMatch();
     QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    //okButton->setDisabled(pl1NameEmpty || pl2NameEmpty || !isWeight);
     okButton->setDisabled(pl1NameEmpty || pl2NameEmpty);
 }
 
